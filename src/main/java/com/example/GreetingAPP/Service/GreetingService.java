@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class GreetingService {
     public String getGreetingMessage(){
@@ -29,4 +32,17 @@ public class GreetingService {
         messageDTO.setId(greeting.getId());
         return messageDTO;
     }
+    public List<MessageDTO> listAll(){
+
+        List<MessageDTO> list = greetingMessageRepository.findAll().stream().map(entity -> {
+            MessageDTO m = new MessageDTO(entity.getMessage());
+            m.setId(entity.getId());
+            return m;
+        }).collect(Collectors.toList());
+
+        return list;
+    }
+
+
+
 }

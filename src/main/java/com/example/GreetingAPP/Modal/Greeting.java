@@ -13,6 +13,8 @@ public class Greeting {
 
     public  String message;
 
+    public Greeting(){}
+
     // Constructor
     public Greeting(String message) {
         this.message = message;

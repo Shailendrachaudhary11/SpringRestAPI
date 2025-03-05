@@ -7,9 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("greet")
 public class GreetingController {
+
+
+
+
+
+    //================================UC6=============================================//
+    @GetMapping("/listAll")
+    public List<MessageDTO> listAll(){
+        return greetingService.listAll();
+    }
+
+
+
 
     //=============================UC5============================================//
     @GetMapping("/find/{id}")
