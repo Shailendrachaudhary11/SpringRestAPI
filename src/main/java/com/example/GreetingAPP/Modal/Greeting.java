@@ -11,7 +11,7 @@ public class Greeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Automatically generate values for this field
     private Long id;
 
-    private String message;
+    public  String message;
 
     // Constructor
     public Greeting(String message) {
