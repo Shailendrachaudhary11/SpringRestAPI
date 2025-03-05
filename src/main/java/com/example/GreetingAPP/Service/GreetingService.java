@@ -56,5 +56,14 @@ public class GreetingService {
 
         return m2;
     }
+    public String delete(Long id){
+
+        Greeting m = greetingMessageRepository.findById(id).orElseThrow(() -> new RuntimeException("Cannot find message with given id"));
+
+        greetingMessageRepository.delete(m);
+
+        return "Message Deleted";
+
+    }
 
 }
