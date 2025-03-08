@@ -16,5 +16,6 @@ public interface I_AuthInterface {
 
     public AuthUserDTO forgotPassword(PasswordDTO password, String email);
 
+    public String resetPassword(String email,String curretPass,String newPass);
 
 }

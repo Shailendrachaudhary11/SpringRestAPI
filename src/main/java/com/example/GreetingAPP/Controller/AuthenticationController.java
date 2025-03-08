@@ -29,14 +29,17 @@ public class AuthenticationController {
     }
 
 
-    //=======================UC13(forgot Passwrod implementation)====================================================================//
+    //=======================UC11(forgot Passwrod implementation)====================================================================//
     @PutMapping("forgotPassword/{email}")
     public AuthUserDTO forgotPassword(@RequestBody PasswordDTO pass, @PathVariable String email){
         return iAuthInterface.forgotPassword(pass, email);
     }
 
-
-
+//=======================================UC12(Reset Password)=========================================================================//
+    @PutMapping("/resetPassword/{email}")
+    public String resetPassword(@PathVariable String email ,@RequestParam String currentPass, @RequestParam String newPass){
+        return iAuthInterface.resetPassword(email, currentPass, newPass);
+    }
 
 
 }
