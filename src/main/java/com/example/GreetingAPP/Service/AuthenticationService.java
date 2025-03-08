@@ -1,18 +1,19 @@
-package com.example.GreetingAPP.Service;
-
-
+package  com.example.GreetingAPP.Service;
 import com.example.GreetingAPP.dto.AuthUserDTO;
 import com.example.GreetingAPP.dto.LoginDTO;
-import com.example.GreetingAPP.Modal.AuthUser;
+import com.example.GreetingAPP.dto.PasswordDTO;
+import com.example.GreetingAPP.Interface.I_AuthInterface;
+import com.example.GreetingAPP.Modal.*;
 import com.example.GreetingAPP.Repository.AuthUserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements I_AuthInterface {
 
     AuthUserRepository userRepository;
     EmailService emailService;
@@ -46,7 +47,7 @@ public class AuthenticationService {
         userRepository.save(newUser);
 
         //sending the confirmation mail to the user
-        emailService.sendEmail(user.getEmail(), "Regitration Status", user.getFirstName()+" you are registered!");
+        emailService.sendEmail(user.getEmail(), "Your Account is Ready!", "UserName : "+user.getFirstName()+" "+user.getLastName()+"\nEmail : "+user.getEmail()+"\nYou are registered!\nBest Regards,\nBridgelabz Team");
 
         return "user registered";
     }
@@ -76,6 +77,31 @@ public class AuthenticationService {
         userRepository.save(foundUser);
 
         return "user logged in"+"\ntoken : "+token;
+    }
+
+    //================================ForgotPassword Service=====================================================//
+
+    public AuthUserDTO forgotPassword(PasswordDTO pass, String email){
+
+        AuthUser foundUser = userRepository.findByEmail(email);
+
+        if(foundUser == null) {
+            System.out.println("No user found with email"+email);
+            throw new RuntimeException("user not registered!");
+        }
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashpass = bCryptPasswordEncoder.encode(pass.getPassword());
+
+        foundUser.setPassword(pass.getPassword());
+        foundUser.setHashPass(hashpass);
+
+        userRepository.save(foundUser);
+
+        emailService.sendEmail(email, "Password Reset Status", "Your password has been reset");
+
+        AuthUserDTO resDto = new AuthUserDTO(foundUser.getFirstName(), foundUser.getLastName(), foundUser.getEmail(), foundUser.getPassword(), foundUser.getId() );
+
+        return resDto;
     }
 
 
